@@ -14,11 +14,16 @@ AIM requires Python 3.7+ and the following packages
 - `torch`
 - `torchtext`
 
-Further download this to use `spacy` tokenizer
+Download this to use `spacy` tokenizer
 ```
 python -m spacy download en_core_web_sm
-
 ```
+
+Replicating the experiments on baselines in this repo further requires
+
+- `lime`
+- `tensorflow==1.15.0`
+- `keras==2.0.0`
 
 Or you can run the following command
 ```
@@ -26,6 +31,7 @@ git clone https://github.com/isVy08/AIM
 cd AIM
 pip install -r requirements.txt
 ```
+
 ## Data
 The script `data_generator.py` provides scripts for downloading datasets and training a tokenizer. 
 IMDB and AG News are available in `torchtext` library while HateXplain is taken from [HateXplain repo](https://github.com/hate-alert/HateXplain/tree/master/Data) (Mathew et al. 2021). 
@@ -52,7 +58,7 @@ python train_blackbox.py config/WordGRU.json val
 ```
 and predictions will be generated in the same format as the original dataset under the name `WordGRU.pickle`. Again, you can directly download the predictions from [Google Drive](https://drive.google.com/drive/folders/1h_74b6ByRxciD20nUIBpJKEZi2pUdUdG?usp=sharing) and place them inside the corresponding folder, i.e., `data/imdb/`.
 
-## Model Explainers
+### Model Explainers
 Our architecture is described in `explainer.py`. To train a model explainer for a dataset e.g., IMDB, do
 ```
 python main.py config/imdb.json
@@ -76,7 +82,11 @@ You can specify the number of top *K* features in the script. Furthermore, this 
 ```
 python infer_conventional.py config/imdb.json AIM data/imdb/score
 ```
-On how to conduct experiments on the baseline models, please refer to `baseline/`.
+On how to conduct experiments on the baseline models, please refer to `baseline/`. 
+<br>The codes are gratefully adapted from [L2X repo](https://github.com/Jianbo-Lab/L2X), [LIME repo](https://github.com/marcotcr/lime-experiments) and [VIBI repo](https://github.com/SeojinBang/VIBI).
+
+
+
 
 # Citation
 If you use the codes or datasets in this repository, please cite our paper.
