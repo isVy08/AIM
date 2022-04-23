@@ -1,0 +1,22 @@
+{
+    "device": "cuda",
+    "data_path": "../../data/agnews/WordCNN.pickle",
+    "model_path": "../../model/agnews/vibi.pt",
+    "path_to_tokenizer": "../../model/tokenizer.pickle",
+    "min_frequency": 5,
+    "max_length": 8,
+    "max_sentence_length": 50,
+    "D": 100,
+    "K": 10,
+    "C": 4,
+    "approximater_type": "lstm",
+    "chunk_size": 1,
+    "tau": 0.7,
+    "data_fraction": 1.0,
+    "beta": 0.1,
+    "batch_size": 50,
+    "lr": 1e-3,
+    "epochs": 20,
+    "item_path": "../../data/agnews/vibi_score",
+    "output_path": "../../data/agnews/vibi_output"
+}

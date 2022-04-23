@@ -1,0 +1,22 @@
+{
+    "device": "cuda",
+    "data_path": "../../data/hatex/WordTF.pickle",
+    "model_path": "../../model/hatex/vibi.pt",
+    "path_to_tokenizer": "../../model/tokenizer.pickle",
+    "min_frequency": 5,
+    "max_length": 4,
+    "max_sentence_length": 50,
+    "D": 100,
+    "K": 10,
+    "C": 2,
+    "approximater_type": "cnn",
+    "chunk_size": 1,
+    "tau": 0.7,
+    "data_fraction": 1.0,
+    "beta": 0.1,
+    "batch_size": 50,
+    "lr": 1e-3,
+    "epochs": 20,
+    "item_path": "../../data/hatex/vibi_score",
+    "output_path": "../../data/hatex/vibi_output"
+}

@@ -1,0 +1,19 @@
+{
+    "device": "cuda",
+    "data_path": "./data/IMDB.pickle",
+    "model_path": "./model/imdb/word_gru.pt",
+    "path_to_tokenizer": "./model/tokenizer.pickle",
+    "min_frequency": 5,
+    "max_length": 400,
+    "C": 2,
+    "model_name": "WordGRU",
+    "text_level": "word",
+    "data_fraction": 1.0,
+    "batch_size": 64,
+    "lr": 1e-3,
+    "epochs": 20,
+    "output_path": [
+        "./data/imdb/WordGRU.txt",
+        "./data/imdb/WordGRU.pickle"
+    ]
+}

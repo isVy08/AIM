@@ -1,0 +1,19 @@
+{
+    "device": "cuda",
+    "data_path": "./data/HATEX.pickle",
+    "model_path": "./model/hatex/word_tf.pt",
+    "path_to_tokenizer": "./model/tokenizer.pickle",
+    "min_frequency": 5,
+    "max_length": 200,
+    "C": 2,
+    "model_name": "WordTF",
+    "text_level": "word",
+    "data_fraction": 1.0,
+    "batch_size": 100,
+    "lr": 1e-4,
+    "epochs": 50,
+    "output_path": [
+        "./data/hatex/WordTF.txt",
+        "./data/hatex/WordTF.pickle"
+    ]
+}
