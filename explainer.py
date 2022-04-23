@@ -126,7 +126,7 @@ class Model(nn.Module):
         
         self.device = device
         self.tau = tau
-	self.L = L
+	    self.L = L
 
 
         self.explainer = Explainer(V, D, C, HE)

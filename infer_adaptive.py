@@ -76,12 +76,12 @@ def infer(config, k, output_file, score_file):
         x = test_x[i, :].to(device)
         x = x.unsqueeze(0)
 
+        pred = model(x)
+        y_hat = pred[:, :, 0].argmax().item() # explainer's predictions
+        weight = pred[0, y, 3:] # spatial weight W
+
         # Write weight vectors for conventional inference
         if score_file is not None:
-            pred = model(x)
-            y_hat = pred[:, :, 0].argmax().item() # explainer's predictions
-            weight = pred[0, y, 3:] # spatial weight W
-
             out = (weight.tolist(), y_hat)
             score_file.write(str(out)+'\n')
 
