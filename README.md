@@ -76,7 +76,7 @@ You can specify the number of top *K* features in the script. Furthermore, this 
 ```
 python infer_conventional.py config/imdb.json AIM data/imdb/score
 ```
-On how to run the baselines, refer to `baseline/`
+On how to conduct experiments on the baseline models, please refer to `baseline/`.
 
 # Citation
 If you use the codes or datasets in this repository, please cite our paper.
