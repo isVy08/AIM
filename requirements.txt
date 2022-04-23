@@ -1,0 +1,11 @@
+spacy
+numpy
+pandas
+nltk
+lemminflect
+tqdm
+torch
+torchtext
+lime
+tensorflow==1.15.0
+keras==2.0.0
