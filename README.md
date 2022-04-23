@@ -59,5 +59,5 @@ python main.py config/agnews.json
 # Evaluation
 
 
-## Citation
+# Citation
 If you use the codes or datasets in this repository, please cite our paper.
