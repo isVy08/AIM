@@ -113,7 +113,7 @@ def predict(config):
     val_indices = list(range(dg.val_x.size(0)))
     test_indices = list(range(dg.test_x.size(0)))
 
-    train_loader = DataLoader(train_indices, batch_size=config.batch_size, shuffle=True)
+    train_loader = DataLoader(train_indices, batch_size=config.batch_size, shuffle=False)
     val_loader = DataLoader(val_indices, batch_size=config.batch_size, shuffle=False)
     test_loader = DataLoader(test_indices, batch_size=config.batch_size, shuffle=False)
     
