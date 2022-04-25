@@ -34,10 +34,10 @@ pip install -r requirements.txt
 
 ## Data
 The script `data_generator.py` provides scripts for downloading datasets and training a tokenizer. 
-IMDB and AG News are available in `torchtext` library while HateXplain is taken from [HateXplain repo](https://github.com/hate-alert/HateXplain/tree/master/Data) (Mathew et al. 2021). 
+IMDB and AG News are available in `torchtext` library while HateXplain can be obtained from [HateXplain repo](https://github.com/hate-alert/HateXplain/tree/master/Data) (Mathew et al. 2021). 
 
 For pre-processed datasets and a pre-trained tokenizer used in our experiment, refer to this [Google Drive collection](https://drive.google.com/drive/folders/1h_74b6ByRxciD20nUIBpJKEZi2pUdUdG?usp=sharing).
-<br>After downloading, the pre-trained tokenizer must be inside the folder `model/` and datasets inside the folder `data/` .
+<br>Download the datasets to `data/` and the pre-trained tokenizer to `model/`.
 
 ## Model
 Configurations for black-box models and model explainers are given in `config/`. 
