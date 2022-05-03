@@ -32,6 +32,9 @@ cd AIM
 pip install -r requirements.txt
 ```
 
+**The following sections focus on experiments for texts. For details on experiments for MNIST dataset, please refer to `mnist/`.**
+
+
 ## Data
 The script `data_generator.py` provides scripts for downloading datasets and training a tokenizer. 
 IMDB and AG News are available in `torchtext` library while HateXplain can be obtained from [HateXplain repo](https://github.com/hate-alert/HateXplain/tree/master/Data) (Mathew et al. 2021). 
@@ -82,10 +85,8 @@ You can specify the number of top *K* features in the script. Furthermore, this 
 ```
 python infer_conventional.py config/imdb.json AIM data/imdb/score
 ```
-On how to conduct experiments on the baseline models, please refer to `baseline/`. 
+On how to run experiments on the baseline models, please refer to `baseline/`. 
 <br>The codes are gratefully adapted from [L2X repo](https://github.com/Jianbo-Lab/L2X), [LIME repo](https://github.com/marcotcr/lime-experiments) and [VIBI repo](https://github.com/SeojinBang/VIBI).
-
-
 
 
 # Citation
