@@ -141,6 +141,7 @@ class Model(nn.Module):
 
     def forward(self, x):
         
+        
         W = self.explainer(x) # [B, C, L]
         probs = self.selector(x)
 
@@ -151,6 +152,8 @@ class Model(nn.Module):
         else:
             Z = probs
                     
+        for params in self.cls.parameters():
+            params.requires_grad = False
         y1 = self.cls(x, probs).unsqueeze(-1) # [B, L, 1]
         scores = W @ probs # [B, C, 1]
         
