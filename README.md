@@ -39,7 +39,7 @@ pip install -r requirements.txt
 The script `data_generator.py` provides scripts for downloading datasets and training a tokenizer. 
 IMDB and AG News are available in `torchtext` library while HateXplain can be obtained from [HateXplain repo](https://github.com/hate-alert/HateXplain/tree/master/Data) (Mathew et al. 2021). 
 
-For pre-processed datasets and a pre-trained tokenizer used in our experiment, refer to this [Google Drive collection](https://drive.google.com/drive/folders/1h_74b6ByRxciD20nUIBpJKEZi2pUdUdG?usp=sharing).
+For pre-processed datasets and a pre-trained tokenizer used in our experiment, refer to this [Google Drive collection](https://drive.google.com/drive/folders/19IkiCWE-8g-XB0Mu4GAw2RgoejK3g6yg?usp=sharing).
 <br>Download the datasets to `data/` and the pre-trained tokenizer to `model/`.
 
 ## Model
@@ -59,7 +59,7 @@ Before training model explainers, you need to obtain the black-box's predictions
 ```
 python train_blackbox.py config/WordGRU.json val
 ```
-and predictions will be generated in the same format as the original dataset under the name `WordGRU.pickle`. Again, you can directly download the predictions from [Google Drive](https://drive.google.com/drive/folders/1h_74b6ByRxciD20nUIBpJKEZi2pUdUdG?usp=sharing) and place them inside the corresponding folder, i.e., `data/imdb/`.
+and predictions will be generated in the same format as the original dataset under the name `WordGRU.pickle`. Again, you can directly download the predictions from [Google Drive](https://drive.google.com/drive/folders/19IkiCWE-8g-XB0Mu4GAw2RgoejK3g6yg?usp=sharing) and place them inside the corresponding folder, i.e., `data/imdb/`.
 
 ### Model Explainers
 Our architecture is described in `explainer.py`. To train a model explainer for a dataset e.g., IMDB, do
@@ -69,7 +69,7 @@ python main.py config/imdb.json
 You will find the trained models inside their respective directory `model/`
 
 # Evaluation
-First, we need a list of stopwords and [WordNet](https://wordnet.princeton.edu/) database. The [Google Drive folder](https://drive.google.com/drive/folders/1h_74b6ByRxciD20nUIBpJKEZi2pUdUdG?usp=sharing) provides a curated list of stopwords and a shortcut `dict` object to Wordnet database. Download and place them inside `data/`.
+First, we need a list of stopwords and [WordNet](https://wordnet.princeton.edu/) database. The [Google Drive folder](https://drive.google.com/drive/folders/1LfEAcN1DU9PKYRiY0e8dZ8zTcG0k1Mfv?usp=sharing) provides a curated list of stopwords and a shortcut `dict` object to Wordnet database. Download and place them inside `data/`.
 
 ## Adaptive Inference
 To perform adaptive infernece on a dataset e.g., IMDB, please run 
