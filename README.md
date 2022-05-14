@@ -1,6 +1,6 @@
 # AIM
 
-This repo includes codes for reproducing the experiments in the paper [Additive Instance-wise Approach to Multi-class Model Interpretation](https://github.com/isVy08/AIM/edit/master/README.md).
+This repo includes codes for reproducing the experiments in the paper Additive Instance-wise Approach to Multi-class Model Interpretation.
 
 ## Dependencies
 AIM requires Python 3.7+ and the following packages
@@ -36,7 +36,7 @@ pip install -r requirements.txt
 
 
 ## Data
-The script `data_generator.py` provides scripts for downloading datasets and training a tokenizer. 
+`data_generator.py` provides scripts for downloading datasets and training a tokenizer. 
 IMDB and AG News are available in `torchtext` library while HateXplain can be obtained from [HateXplain repo](https://github.com/hate-alert/HateXplain/tree/master/Data) (Mathew et al. 2021). 
 
 For pre-processed datasets and a pre-trained tokenizer used in our experiment, refer to this [Google Drive collection](https://drive.google.com/drive/folders/19IkiCWE-8g-XB0Mu4GAw2RgoejK3g6yg?usp=sharing).
@@ -77,10 +77,10 @@ To perform adaptive infernece on a dataset e.g., IMDB, please run
 python infer_adaptive.py config/imdb.json
 ```
 
-You can specify the number of top *K* features in the script. Furthermore, this script also outputs the weight vectors and qualitative samples written into separate files for your investigation. The saved weight vectors are used for conventional inference. To disable this operation, please set `output_file = None` and `score_file = None`.
+You can specify the value for *K_max* in the script. This script also outputs the weight vectors and qualitative samples written into separate files for your investigation. The saved weight vectors are used for conventional inference. To disable this operation, please set `output_file = None` and `score_file = None`.
 
 ## Conventional Inference
-`infer_conventional.py` provides instructions on how to perform conventional inference for **AIM** and other baselines. This evaluation method requires a saved weight vector for the model. To obtain one for **AIM**, remember to run `infer_adaptive.py` first and specify a path for `score_file`. For example, to evaluate **AIM** on IMDB,  
+`infer_conventional.py` provides instructions on how to perform conventional inference for **AIM** and other baselines. This evaluation method requires a saved weight vector for the model. To obtain one for **AIM**, please run `infer_adaptive.py` first and specify a path for `score_file`. For example, to evaluate **AIM** on IMDB,  
 
 ```
 python infer_conventional.py config/imdb.json AIM data/imdb/score
