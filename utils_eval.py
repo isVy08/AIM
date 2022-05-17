@@ -19,9 +19,9 @@ def get_top_features(x, top_idx, tokenizer):
 def mask_data(score, x, k, mask_type, device, L):
 
     top_idx = torch.topk(score, k).indices
-    if mask_type == 'neg': # mask negative words, leave important words
+    if mask_type == 'neg': # mask negative words, retain important words
         selected = top_idx.tolist()
-    else: # mask positive words
+    else: # mask positive words, retain unimportant words
         selected = [j for j in range(L) if j not in top_idx]
                 
     selected_x = x[selected]
@@ -30,7 +30,7 @@ def mask_data(score, x, k, mask_type, device, L):
     return masked_x 
 
 
-## BREVITY
+## BREVITY: smaller is better
 def brevity(top_tokens, wnb):    
     synonyms = {}
     for token in top_tokens:
@@ -60,10 +60,10 @@ def brevity(top_tokens, wnb):
                     if len(synonyms[orig] & synonyms[ref]) > 0:
                         clusters[orig].append(ref)
                         del synonyms[ref]
-    return len(clusters) # the smaller, the better
+    return len(clusters) 
 
 
-# STABILITY
+# STABILITY (semantics similarity): higher is better
 def convert_to_bert_hidden_states(tokenizer, model, x):
     with torch.no_grad():
         inputs = tokenizer(x, return_tensors="pt", max_length=400, truncation=True)
