@@ -61,3 +61,17 @@ def brevity(top_tokens, wnb):
                         clusters[orig].append(ref)
                         del synonyms[ref]
     return len(clusters) # the smaller, the better
+
+
+# STABILITY
+def convert_to_bert_hidden_states(tokenizer, model, x):
+    with torch.no_grad():
+        inputs = tokenizer(x, return_tensors="pt", max_length=400, truncation=True)
+        outputs = model(**inputs, output_hidden_states=True)
+        hidden_states = outputs['hidden_states'][-1]
+        return torch.sum(hidden_states.squeeze(0), dim=0)
+
+def bert_cos_sim(a, b, dummy):
+    from torch.nn import CosineSimilarity
+    cos = CosineSimilarity(dim=1, eps=1e-6)
+    return cos(a, b).item()
