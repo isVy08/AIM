@@ -80,11 +80,11 @@ class Sample_Concrete(nn.Module):
         return Z
 
 
-class Supporter(nn.Module):
+class Approximator(nn.Module):
     
         
     def __init__(self, V, D, L, C, H, in_kernel, p):
-        super(Supporter, self).__init__()
+        super(Approximator, self).__init__()
 
         self.L = L
         
@@ -133,7 +133,7 @@ class Model(nn.Module):
         self.selector = Selector(V, D, L, HS, p)
         self.sampler = Sample_Concrete(tau)
         self.cls = cls
-        self.sup = Supporter(V, D, L, C, HU, in_kernel, p)
+        self.sup = Approximator(V, D, L, C, HU, in_kernel, p)
         
         self.out_layer = nn.Softmax(dim=1)
 
