@@ -80,7 +80,7 @@ python infer_adaptive.py config/imdb.json
 You can specify the value for *K_max* in the script. This script also outputs the weight vectors and qualitative samples written into separate files for your investigation. The saved weight vectors are used for conventional inference. To disable this operation, please set `output_file = None` and `score_file = None`.
 
 ## Conventional Inference
-`infer_conventional.py` provides instructions on how to perform conventional inference for **AIM** and other baselines. This evaluation method requires a saved weight vector for the model. To obtain one for **AIM**, please run `infer_adaptive.py` first and specify a path for `score_file`. For example, to evaluate **AIM** on IMDB,  
+`infer_conventional.py` provides instructions on how to perform conventional inference for **AIM** and other baselines. This evaluation method requires a saved weight vector for the model. To obtain one for **AIM**, please run `infer_adaptive.py` first and specify a path for `score_file`. For example, to evaluate **AIM** on IMDB with path to the weight vector as `data/imdb/score`,
 
 ```
 python infer_conventional.py config/imdb.json AIM data/imdb/score
