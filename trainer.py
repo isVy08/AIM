@@ -31,9 +31,7 @@ def train_epoch(model, optimizer, scheduler, loader, loss_fn, X, Y, device):
     return losses / len(loader), accuracy / len(loader)
    
 
-def calculate_ph_accuracy(x, y, pred, model, device, s):
-
-    
+def calculate_ph_accuracy(x, y, pred, model, device, s):   
     acc = 0 
     L = model.L
     N = x.size(0)
@@ -51,12 +49,10 @@ def calculate_ph_accuracy(x, y, pred, model, device, s):
     return acc
 
 def calculate_accuracy(pred, y):
-
     if len(pred.shape) > 2:
         y_hat = pred[:, :, 2].argmax(-1)
     else:
         y_hat = pred.argmax(-1)
-    
     return (y == y_hat).sum(0) / len(y)
     
 
