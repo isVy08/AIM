@@ -53,7 +53,7 @@ def calculate_ph_accuracy(x, y, pred, model, device, s):
 def calculate_accuracy(pred, y):
 
     if len(pred.shape) > 2:
-        y_hat = pred[:, :, 0].argmax(-1)
+        y_hat = pred[:, :, 2].argmax(-1)
     else:
         y_hat = pred.argmax(-1)
     
