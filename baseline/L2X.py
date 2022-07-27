@@ -139,7 +139,7 @@ def L2X(train, dg, model_path, batch_size):
         X_ph = Input(shape=(maxlen,), dtype='int32')
 
         logits_T = construct_gumbel_selector(X_ph, max_features, embedding_dims, maxlen)
-        tau = 0.5
+        tau = 0.2
         T = Sample_Concrete(tau, k)(logits_T)
 
     # q(X_S)
