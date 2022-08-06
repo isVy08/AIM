@@ -494,6 +494,8 @@ class Explainer(nn.Module):
                                                  tau = self.tau,
                                                  k = self.K,
                                                  num_sample = num_sample) # torch.Size([batch-size, num-samples for multishot prediction, d])
+        Z_hat = Z_hat.to(x.device)
+        Z_hat_fixed = Z_hat_fixed.to(x.device)
         logit = self.approximater(x, Z_hat, num_sample)
         logit_fixed = self.approximater(x, Z_hat_fixed)
 
