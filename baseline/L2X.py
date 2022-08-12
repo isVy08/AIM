@@ -32,7 +32,7 @@ elif dataset == 'hatex':
 
 
 # Set parameters:
-embedding_dims = 50
+embedding_dims = 100
 filters = 250
 
 
@@ -187,18 +187,20 @@ def L2X(train, dg, model_path, batch_size):
 
 def validation(scores, preds, file, k):    
     iter = range(len(scores))
+    acc = 0
     for i in tqdm(iter):
         x = dg.test_x[i,:]
         text = dg.test_text[i]
         # Get label
         y_hat = np.argmax(preds[i])
         y = np.argmax(dg.test_label[i])
+        if y_hat == y:
+            acc += 1
         # Get features
         score = scores[i, :]
         score = torch.tensor(score)
         selected = torch.topk(score, k).indices
         tokens = dg.tokenizer.decode(x[selected].tolist())
-        features.append(tokens)
         content = f"{i}. {text}\n\nFeatures: {tokens}\n\nPrediction: {y_hat} - Label: {y}\n"
         file.write(content)
         file.write('*'*10+'\n')
@@ -210,9 +212,9 @@ def validation(scores, preds, file, k):
 if __name__ == '__main__':
 
 
-    output_path = f"./data/{dataset}/l2xs/l2x_k{k}"
-    item_path = f'./data/{dataset}/l2xs/l2x_k{k}.pickle'
-    model_path = f'./model/{dataset}/l2xs/l2x_k{k}.hdf5'
+    output_path = f"./data/{dataset}_l2x_k{k}"
+    item_path = f'./data/{dataset}_l2x_k{k}.pickle'
+    model_path = f'./model/{dataset}_l2x_k{k}.hdf5'
 
     # Run on blackbox predictions
     config.data_path = config.output_path[1]

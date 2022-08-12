@@ -7,11 +7,11 @@ from utils_eval import *
 from lime.lime_text import LimeTextExplainer
 
 class LIMER(object):
-    def __init__(self, dg, cls, device):
+    def __init__(self, dg, cls, kernel_width, device):
         dg.verbose = False
         self.dg = dg
         self.cls = cls 
-        self.explainer = LimeTextExplainer()
+        self.explainer = LimeTextExplainer(kernel_width=kernel_width)
         self.device = device
         
 
@@ -26,7 +26,7 @@ class LIMER(object):
             return probs.detach().numpy()
             
 def evaluate_lime(limer, num_samples, 
-                texts, labels, bb_labels, k, 
+                texts, bb_labels, k, 
                  wnb, stopwords):
     
     

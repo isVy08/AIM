@@ -133,7 +133,8 @@ if __name__ == '__main__':
         _, score = load_outputs(path)
         
     elif model_name == 'LIME':
-        limer = LIMER(dg, cls, device)
+        kernel_width = 15
+        limer = LIMER(dg, cls, kernel_width, device)
             
     
     # Obtain test data
@@ -149,6 +150,7 @@ if __name__ == '__main__':
     """
     
     k = 10
+    
 
     if model_name in ('L2X', 'VIBI', 'AIM'):
         
@@ -158,7 +160,7 @@ if __name__ == '__main__':
     elif model_name == 'LIME':
         num_samples = 4000
     
-        A, S, B = evaluate_lime(limer, num_samples, texts, labels, bb_labels, k, wnb, stopwords)
+        A, S, B = evaluate_lime(limer, num_samples, texts, bb_labels, k, wnb, stopwords)
         print(f"Faithfulness: {A:.3f} - Purity: {S:.3f} - Brevity: {B:.3f}")
     
     else: 
