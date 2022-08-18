@@ -1,7 +1,7 @@
 {
     "device": "cuda:2",
     "data_path": "../../data/hatex/WordTF.pickle",
-    "model_path": "../../model/hatex/vibi.pt",
+    "model_path": "../../model/hatex/vibi",
     "path_to_tokenizer": "../../model/tokenizer.pickle",
     "min_frequency": 5,
     "max_length": 4,

@@ -1,7 +1,7 @@
 {
     "device": "cuda",
     "data_path": "../../data/imdb/WordGRU.pickle",
-    "model_path": "../../model/imdb/vibi.pt",
+    "model_path": "../../model/imdb/vibi",
     "path_to_tokenizer": "../../model/tokenizer.pickle",
     "min_frequency": 5,
     "max_length": 8,
