@@ -1,3 +1,5 @@
+tensorflow==1.15.0
+keras==2.0.0
 spacy
 numpy
 pandas
@@ -7,5 +9,3 @@ tqdm
 torch
 torchtext
 lime
-tensorflow==1.15.0
-keras==2.0.0

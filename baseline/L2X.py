@@ -17,7 +17,8 @@ from utils import *
 np.random.seed(0)
 import sys
 dataset = sys.argv[1]
-K = sys.argv[2]
+k = int(sys.argv[2])
+
 
 
 if dataset == 'imdb':
@@ -41,7 +42,7 @@ filters = 250
 kernel_size = 3
 hidden_dims = 250
 epochs = 5
-k = int(K) #==============================
+ 
 print(f'========== K = {k} ============== ')
 
 PART_SIZE = 125

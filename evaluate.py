@@ -123,6 +123,68 @@ def evaluate(X, cls, scores, k, device, L):
             
     return np.round(S / N, 4), np.round(B / N, 4), np.round(A / N, 4), np.round(PL / N, 4), np.round(NL / N, 4) 
 
+def evaluate_lime(texts, cls, dg, tokens, k, device):
+    """
+    X           : input text data
+    cls         : black-box classifier
+    scores      : feature weight vectors
+    bb_labels   : predictions of black box on full data
+    k           : top k features selected 
+    device      : device
+    L           : sequence length
+    """
+    
+    N = len(texts)
+    A, S, B, NL, PL = 0, 0, 0, 0, 0
+    dg.verbose = False
+    
+
+    for i in tqdm(range(N)):
+        text = dg._preprocess(texts[i])
+        top_tokens = tokens[i]
+
+        B += brevity(top_tokens, wnb)
+        stopwords_count = len(set(top_tokens) & set(stopwords))
+        S += stopwords_count / k
+  
+        # Mask UNimportant words 
+        neg_text = ' '.join(top_tokens)
+        neg_x = dg._transform([neg_text])
+        neg_x = neg_x.to(device)
+
+        # Mask IMportant words
+        text_tokens = text.split(' ')
+        text_tokens = [tok for tok in text_tokens if tok not in top_tokens]
+        pos_text = ' '.join(text_tokens)
+        pos_x = dg._transform([pos_text])
+        pos_x = pos_x.to(device)
+
+       
+        # Black box's predictions on full data
+        prob = torch.Tensor(dg.test_label[i])
+        y = prob.argmax(-1).item()
+        lo = log_odds(prob[y])
+
+
+        # Black box's predictions on masked data
+        pos_prob = cls(pos_x)
+        neg_prob = cls(neg_x)
+
+        neg_y = neg_prob.argmax(-1).item()
+        pos_lo = log_odds(pos_prob[0, y])
+        neg_lo = log_odds(neg_prob[0, y])
+
+        NL += (lo - neg_lo).item()
+        PL += (lo - pos_lo).item()
+
+
+        if neg_y == y: 
+            A += 1 
+            
+    return np.round(S / N, 4), np.round(B / N, 4), np.round(A / N, 4), np.round(PL / N, 4), np.round(NL / N, 4) 
+
+
+
 
 if __name__ == '__main__':
     import sys
@@ -130,30 +192,40 @@ if __name__ == '__main__':
     Load models and data
     ---------------------------------------------------------------------
     """
-    config = get_config(sys.argv[1])
+    dataset = sys.argv[1]
+    config_path = f'config/{dataset}.json'
+    config = get_config(config_path)
+    
     score_path = sys.argv[2]
 
-    score = load_scores(score_path)
-    
-    
     device = torch.device(config.device if torch.cuda.is_available() else 'cpu')
-    dg, cls, bb_labels = load_base(config)
+    dg, cls = load_base(config)
     print(dg.data_path)
     V = dg.tokenizer.get_vocab_size()
     L = dg.max_length
 
-    
     # Obtain test data
     texts = dg.test_text
-    X = dg._transform(texts)
+    
 
+    k = int(sys.argv[3])
+
+    if 'lime' in score_path:
+
+        tokens = load(score_path)
+        tokens = [eval(tok) for tok in tokens]
+        S, B, A, PL, NL = evaluate_lime(texts, cls, dg, tokens, k, device)
+        print(S, B, A, PL, NL)
+
+
+    else:
+        X = dg._transform(texts)
+        score = load_scores(score_path)
     
-    """
-    Evaluation starts here
-    ---------------------------------------------------------------------
-    """
-    
-    k = 10
-    
-    S, B, A, PL, NL = evaluate(X, cls, score, k, device, L)
-    print(S, B, A, PL, NL)
+        """
+        Evaluation starts here
+        ---------------------------------------------------------------------
+        """
+        
+        S, B, A, PL, NL = evaluate(X, cls, score, k, device, L)
+        print(S, B, A, PL, NL)
