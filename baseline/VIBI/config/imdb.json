@@ -14,9 +14,8 @@
     "tau": 0.7,
     "data_fraction": 1.0,
     "beta": 0.1,
-    "batch_size": 50,
+    "batch_size": 100,
     "lr": 1e-3,
-    "epochs": 20,
-    "item_path": "../../data/imdb/vibi_score",
-    "output_path": "../../data/imdb/vibi_output"
+    "epochs": 10,
+    "score_path": "../../data/imdb/vibi"
 }

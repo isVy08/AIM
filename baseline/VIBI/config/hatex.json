@@ -1,5 +1,5 @@
 {
-    "device": "cuda",
+    "device": "cuda:2",
     "data_path": "../../data/hatex/WordTF.pickle",
     "model_path": "../../model/hatex/vibi.pt",
     "path_to_tokenizer": "../../model/tokenizer.pickle",
@@ -14,9 +14,8 @@
     "tau": 0.5,
     "data_fraction": 1.0,
     "beta": 0.5,
-    "batch_size": 50,
+    "batch_size": 100,
     "lr": 1e-3,
-    "epochs": 20,
-    "item_path": "../../data/hatex/vibi_score",
-    "output_path": "../../data/hatex/vibi_output"
+    "epochs": 10,
+    "score_path": "../../data/hatex/vibi"
 }
