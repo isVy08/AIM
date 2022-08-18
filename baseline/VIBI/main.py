@@ -89,8 +89,8 @@ def train(config):
 
     
     val_x = Variable(dg.val_x)
-    val_y = Variable(dg.val_y)
-    train_x = Variable(dg.train_x.argmax(-1))
+    train_x = Variable(dg.train_x)
+    val_y = Variable(dg.val_y.argmax(-1))
     train_y = Variable(dg.train_y.argmax(-1))
 
 
@@ -129,13 +129,9 @@ def train(config):
             prev_acc = val_acc
 
     
-def validate(config, k):
+def validate(config):
 
-    def get_top_features(x, top_idx, tokenizer):
-        f = x[0, top_idx] 
-        f = f[f > 0]
-        top_tokens = tokenizer.decode(f.tolist())
-        return top_tokens
+
 
     device = torch.device(config.device if torch.cuda.is_available() else 'cpu')
     
@@ -147,9 +143,7 @@ def validate(config, k):
     model = Explainer(V, config)
     load_model(model, None, config.model_path, device)
 
-    item_file = open(config.item_path, 'w+')
-    output_file = open(config.output_path, 'w+')
-    features = []
+    score_file = open(config.score_path, 'w+')
     iter = range(test_x.size(0)) 
     acc = 0
     for i in tqdm(iter):
@@ -166,36 +160,22 @@ def validate(config, k):
             acc += 1
         
         out = (score.tolist(), y_hat)
-        item_file.write(str(out)+'\n')
+        score_file.write(str(out)+'\n')
 
-        idx = torch.topk(score, k).indices
-        tokens = get_top_features(x, idx, dg.tokenizer)
-        
-        features.append(tokens)
-        
-        content = f"{i}. {text}\n\nFeaturs: {tokens}\n\nPrediction: {y_hat} - Label: {y}\n"
-        output_file.write(content)
-        output_file.write('*' * 10+'\n')
 
     print(f"Accuracy: {acc / len(iter)}")
-    item_file.close()
-    output_file.close()
-    return features
+    score_file.close()
     
 
 if __name__ == "__main__":
-    config = get_config(sys.argv[1])
+    dataset = sys.argv[1]
+    config_path = f'config/{dataset}.json'
+    config = get_config(config_path)
+    config.score_path = config.score_path + f'_k{config.K}.txt' 
     import sys
     if sys.argv[2] == 'train':
         train(config)
     else:
         dataset = config.data_path.split('/')[-2]
-        features = validate(config, 10)
-        if dataset == 'imdb':
-            if os.path.isfile(f'outputs/{dataset}_features.pickle'):
-                ft =  load_pickle(f'outputs/{dataset}_features.pickle')
-            else: 
-                ft = {}
-                    
-            ft['VIBI'] = features
-            write_pickle(ft, f'outputs/{dataset}_features.pickle' )
+        validate(config)
+        

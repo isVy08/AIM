@@ -126,7 +126,7 @@ def idxtobool(idx, size, is_cuda):
                 subidx = idx[i, j, :]
                 V[i, j, subidx] = float(1)
                 
-    elif len(size) is 2:
+    elif len(size) == 2:
         
         for i in range(size[0]):
             subidx = idx[i,:]
