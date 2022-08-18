@@ -10,7 +10,7 @@ from utils import load, load_pickle
 
 ## GET TOP TOKENS
 def get_top_features(x, top_idx, tokenizer):
-    f = x[0, top_idx] 
+    f = x[top_idx] 
     f = f[f > 0]
     top_tokens = tokenizer.decode(f.tolist())
     return top_tokens

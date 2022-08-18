@@ -154,6 +154,7 @@ class Model(nn.Module):
                     
         for params in self.cls.parameters():
             params.requires_grad = False
+            
         y1 = self.cls(x, Z).unsqueeze(-1) # [B, L, 1]
         scores = W @ Z # [B, C, 1]
         

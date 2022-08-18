@@ -13,7 +13,7 @@ def train_epoch(model, optimizer, scheduler, loader, loss_fn, X, Y, device):
         y = Y[idx].to(device)
         
         pred = model(x)
-        if y.size(1) == 2:
+        if y.size(1) > 1:
             y = y.argmax(-1)
         loss = loss_fn(pred, y)
         
@@ -49,7 +49,7 @@ def val_epoch(model, loader, loss_fn, X, Y, device):
         y = Y[idx].to(device)
         pred = model(x)
 
-        if y.size(1) == 2:
+        if y.size(1) > 1:
             y = y.argmax(-1)
 
         loss = loss_fn(pred, y) 

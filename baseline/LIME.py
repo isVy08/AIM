@@ -1,18 +1,21 @@
 
-import string
-import torch
+import torch, sys
 from tqdm import tqdm
-from utils import load
-from utils_eval import *
+import init
+from utils import get_config
 from lime.lime_text import LimeTextExplainer
+from data_generator import DataGenerator
+
+
 
 class LIMER(object):
-    def __init__(self, dg, cls, kernel_width, device):
+    def __init__(self, dg, cls, kernel_width, dataset, device):
         dg.verbose = False
         self.dg = dg
         self.cls = cls 
         self.explainer = LimeTextExplainer(kernel_width=kernel_width)
         self.device = device
+        self.dataset = dataset
         
 
     def predict_proba(self, text_list):
@@ -25,12 +28,13 @@ class LIMER(object):
                 return probs.cpu().numpy()
             return probs.detach().numpy()
             
-def evaluate_lime(limer, num_samples, 
-                texts, bb_labels, k, 
-                 wnb, stopwords):
+def evaluate_lime(limer, k, num_samples, texts):
+
+    file = open(f'data/{limer.dataset}/lime_k{k}.txt', 'w+')
     
     
     N = len(texts)
+    print("Test set size: ", N)
 
     A, S, B = 0, 0, 0
     labs = tuple(range(limer.dg.C))
@@ -39,23 +43,44 @@ def evaluate_lime(limer, num_samples,
         text = texts[i]
         exp = limer.explainer.explain_instance(text, limer.predict_proba, num_features=k, num_samples=num_samples, labels=labs) # explain label 1
         top_tokens = [item[0] for item in exp.as_list()]
-
-        # Evaluate quality
-        B += brevity(top_tokens, wnb)
-        # Stop words ratio
-        stopwords_count = len(set(top_tokens) & set(stopwords))
-        S += stopwords_count / k
-        
-        
-        # get X ids --> obtain token ids --> masked
-        masked_text = ' '.join(top_tokens)
-        masked_input = limer.dg._transform([masked_text])
-        masked_input = masked_input.to(limer.device)
-        bb_y = limer.cls(masked_input).argmax(-1).item()
-
-        if bb_y == bb_labels[i].item():
-            A += 1 
+        file.write(str(top_tokens) + '\n')
+    
+    file.close()
     
 
-    return round(A / N, 4), round(S / N, 4), round(B / N, 4)
-  
+if __name__ == "__main__":
+    dataset = sys.argv[1]
+    k = int(sys.argv[2])
+    # device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
+    device = 'cpu'
+    config_path = f'config/{dataset}.json'
+    config = get_config(config_path)
+    cls_config = get_config(config.classifier_config)
+    cls_config.data_path = config.data_path
+    dg = DataGenerator(cls_config)
+    
+    print('Loading black-box ...')
+    V = dg.tokenizer.get_vocab_size()
+    if cls_config.model_name == 'WordGRU':
+        from blackbox import WordGRU
+        cls = WordGRU(V)
+        
+    elif cls_config.model_name == 'WordCNN':
+        from blackbox import WordCNN
+        cls = WordCNN(V) 
+        
+    elif cls_config.model_name == 'WordTF':
+        from blackbox import WordTransformer
+        cls = WordTransformer(V, L = cls_config.max_length, C = cls_config.C)
+    
+    cls.to(device)
+    
+
+    widths = {'imdb': 15, 'hatex': 35, 'agnews': 15}
+    num_samples = 2000
+    
+    print('Start evaluating LIME ...')
+    
+    kernel_width = widths[dataset]
+    limer = LIMER(dg, cls, kernel_width, dataset, device)
+    evaluate_lime(limer, k, num_samples, dg.test_text)
