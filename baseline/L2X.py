@@ -14,8 +14,10 @@ import init
 from data_generator import *
 from utils import *
 
+np.random.seed(0)
 import sys
 dataset = sys.argv[1]
+K = sys.argv[2]
 
 
 if dataset == 'imdb':
@@ -39,7 +41,7 @@ filters = 250
 kernel_size = 3
 hidden_dims = 250
 epochs = 5
-k = 10 #==============================
+k = int(K) #==============================
 print(f'========== K = {k} ============== ')
 
 PART_SIZE = 125
@@ -133,17 +135,20 @@ def L2X(train, dg, model_path, batch_size):
     
 
     print('Creating model...')
+    if dataset in ('imdb', 'hatex'):
+        tau = 0.2
+    else:
+        tau = 0.5
 
     # P(S|X)
-    with tf.variable_scope('selection_model'):
+    with tf.compat.v1.variable_scope('selection_model'):
         X_ph = Input(shape=(maxlen,), dtype='int32')
 
         logits_T = construct_gumbel_selector(X_ph, max_features, embedding_dims, maxlen)
-        tau = 0.2
         T = Sample_Concrete(tau, k)(logits_T)
 
     # q(X_S)
-    with tf.variable_scope('prediction_model'):
+    with tf.compat.v1.variable_scope('prediction_model'):
         
         emb2 = Embedding(max_features, embedding_dims, input_length=maxlen)(X_ph)
         mask = Lambda(lambda x: K.concatenate([x]*embedding_dims, axis=2))(T)
@@ -185,36 +190,12 @@ def L2X(train, dg, model_path, batch_size):
     return preds, scores 
 
 
-def validation(scores, preds, file, k):    
-    iter = range(len(scores))
-    acc = 0
-    for i in tqdm(iter):
-        x = dg.test_x[i,:]
-        text = dg.test_text[i]
-        # Get label
-        y_hat = np.argmax(preds[i])
-        y = np.argmax(dg.test_label[i])
-        if y_hat == y:
-            acc += 1
-        # Get features
-        score = scores[i, :]
-        score = torch.tensor(score)
-        selected = torch.topk(score, k).indices
-        tokens = dg.tokenizer.decode(x[selected].tolist())
-        content = f"{i}. {text}\n\nFeatures: {tokens}\n\nPrediction: {y_hat} - Label: {y}\n"
-        file.write(content)
-        file.write('*'*10+'\n')
-    
-    print('Accuracy:', acc / len(iter))
-    file.close()
-
-
 if __name__ == '__main__':
 
 
-    output_path = f"./data/{dataset}_l2x_k{k}"
-    item_path = f'./data/{dataset}_l2x_k{k}.pickle'
-    model_path = f'./model/{dataset}_l2x_k{k}.hdf5'
+   
+    score_path = f'./data/{dataset}/l2x_k{k}.pickle'
+    model_path = f'./model/{dataset}/l2x_k{k}.hdf5'
 
     # Run on blackbox predictions
     config.data_path = config.output_path[1]
@@ -228,14 +209,10 @@ if __name__ == '__main__':
         dg.val_label = dg.val_label[:4000]
 
     dg.generate_data()
-    print(dg.train_y.shape)
     
-
     preds, scores = L2X(True, dg, model_path, batch_size)
-    write_pickle((preds, scores), item_path)
+    write_pickle((preds, scores), score_path)
 
-    file = open(output_path, 'w+')
-    validation(scores, preds, file, k)
 
 
     
