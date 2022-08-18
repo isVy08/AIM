@@ -133,7 +133,7 @@ if __name__ == '__main__':
     config = get_config(sys.argv[1])
     score_path = sys.argv[2]
 
-    scores = load_score(score_path)
+    score = load_scores(score_path)
     
     
     device = torch.device(config.device if torch.cuda.is_available() else 'cpu')
