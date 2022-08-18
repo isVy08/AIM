@@ -18,5 +18,5 @@
     "tau": 0.2,
     "temp": 1.0,
     "epochs": 10,
-    "output_path": "./data/imdb/output"
+    "score_path": "./data/imdb/aim"
 }

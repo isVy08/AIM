@@ -1,5 +1,3 @@
-import os
-import string
 import torch
 from utils import *
 from tqdm import tqdm
@@ -7,11 +5,9 @@ from utils_eval import *
 from explainer import Model, Selector, Explainer
 from data_generator import Tokenizer, DataGenerator
 
-stopwords = load('./data/stopwords') + list(string.punctuation)   
-wnb = load_pickle('./data/wordnet.db')
 
 
-def infer(config, k, output_file, score_file): 
+def infer(config, score_file): 
     """
     config      : model configurations
     k           : k max for early stopping
@@ -66,12 +62,11 @@ def infer(config, k, output_file, score_file):
     model.eval()
 
     iter = range(test_x.size(0)) 
-    A, B, S = 0, 0, 0
+
+    A = 0
     
     for i in tqdm(iter):
-
-        text = dg.test_text[i]
-        y = np.argmax(dg.test_label[i])
+        y = np.argmax(dg.test_label[i], -1)
 
         x = test_x[i, :].to(device)
         x = x.unsqueeze(0)
@@ -84,56 +79,26 @@ def infer(config, k, output_file, score_file):
         if score_file is not None:
             out = (weight.tolist(), y_hat)
             score_file.write(str(out)+'\n')
-
-
-        ##### Adaptive inference begins #####
         
-        _, indices = torch.sort(weight, descending=True)
-        for j in range(L):
-            masked_x = torch.zeros_like(x)
-            masked_x[:, :j+1] = x[:, indices[:j+1]]
-            bb_y = cls(masked_x, None).argmax(-1).item()
-            if bb_y == y:
-                A += 1
-                break 
-                
-            elif j >= k:
-                break
-        
-        
-        idx = indices[:j+1]        
-        tokens = get_top_features(x, idx, dg.tokenizer)
-        
-        B += brevity(tokens, wnb)
-        # Stop words ratio
-        stopwords_count = len(set(tokens) & set(stopwords))
-        S += stopwords_count / (j+1)
-
-
-        # Write top k tokens 
-        top_k = indices[:k]        
-        top_k_tokens = get_top_features(x, idx, dg.tokenizer)
-
-        if output_file is not None:
-            content = f"{i}. {text}\n\n{j+1} optimal feature(s). Top {k} features: {tokens}\n\nExplainer's label: {y_hat} - Black-box's label: {y}\n"
-            output_file.write(content)
-            output_file.write('*'*10+'\n')
+        if y == y_hat:
+            A += 1
     
-    N = len(iter)
-    if score_file is not None:
-        score_file.close()
+    print('Accuracy: ', A/len(iter))
     
-    if output_file is not None:
-        output_file.close()
-    return round(A / N, 4), round(S / N, 4), round(B / N, 4)
+    score_file.close()
+
     
 
 if __name__ == "__main__":
     import sys
-    config = get_config(sys.argv[1]) 
-    k = 10 # replace 10 with whatever value you want to investigate
-    output_file = open(config.output_path, 'w+')
+    dataset = sys.argv[1]
+    config_path = f'config/{dataset}.json'
+    config = get_config(config_path)
+    no = sys.argv[2]
+    config.model_path = config.model_path + f'_{no}.pt'
+    config.score_path = config.score_path + f'_{no}.txt'
+    
     score_file = open(config.score_path, 'w+')    
-    A, S, B = infer(config, k, output_file, score_file)
-    print(f"Faithfulness: {A:.3f} - Purity: {S:.3f} - Brevity: {B:.3f}")
+    infer(config, score_file)
+    
 

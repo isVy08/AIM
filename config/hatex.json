@@ -18,5 +18,5 @@
     "tau": 0.2,
     "temp": 1.0,
     "epochs": 10,
-    "score_path": "./data/hatex/score"
+    "score_path": "./data/hatex/aim"
 }
