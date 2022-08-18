@@ -35,8 +35,6 @@ def evaluate_lime(limer, k, num_samples, texts):
     
     N = len(texts)
     print("Test set size: ", N)
-
-    A, S, B = 0, 0, 0
     labs = tuple(range(limer.dg.C))
 
     for i in tqdm(range(N)):
@@ -51,8 +49,7 @@ def evaluate_lime(limer, k, num_samples, texts):
 if __name__ == "__main__":
     dataset = sys.argv[1]
     k = int(sys.argv[2])
-    # device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
-    device = 'cpu'
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     config_path = f'config/{dataset}.json'
     config = get_config(config_path)
     cls_config = get_config(config.classifier_config)
