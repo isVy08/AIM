@@ -1,7 +1,7 @@
 {
     "device": "cuda",
     "data_path": "./data/agnews/WordCNN.pickle",
-    "model_path": "./model/agnews/ag.pt",
+    "model_path": "./model/agnews/aim",
     "classifier_config": "./config/WordCNN.json",
     "D": 100,
     "C": 4,
@@ -18,6 +18,5 @@
     "tau": 0.2,
     "temp": 1.0,
     "epochs": 10,
-    "output_path": "./data/agnews/output",
     "score_path": "./data/agnews/score"
 }

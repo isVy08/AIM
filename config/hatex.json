@@ -1,7 +1,7 @@
 {
     "device": "cuda",
     "data_path": "./data/hatex/WordTF.pickle",
-    "model_path": "./model/hatex/hatex.pt",
+    "model_path": "./model/hatex/aim",
     "classifier_config": "./config/WordTF.json",
     "D": 100,
     "C": 2,
@@ -18,6 +18,5 @@
     "tau": 0.2,
     "temp": 1.0,
     "epochs": 10,
-    "output_path": "./data/hatex/output",
     "score_path": "./data/hatex/score"
 }

@@ -1,7 +1,7 @@
 {
     "device": "cuda",
     "data_path": "./data/imdb/WordGRU.pickle",
-    "model_path": "./model/imdb/imdb.pt",
+    "model_path": "./model/imdb/aim",
     "classifier_config": "./config/WordGRU.json",
     "D": 100,
     "C": 2,
@@ -18,6 +18,5 @@
     "tau": 0.2,
     "temp": 1.0,
     "epochs": 10,
-    "output_path": "./data/imdb/output",
-    "score_path": "./data/imdb/score"
+    "output_path": "./data/imdb/output"
 }
