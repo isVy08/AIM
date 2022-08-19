@@ -58,7 +58,10 @@ def load_scores(path):
             scores = [eval(item) for item in data]     
         else:
             scores = [eval(item)[0] for item in data]
-    return torch.tensor(scores)
+    N = len(scores)
+    scores = torch.Tensor(scores).reshape(N, -1)
+    
+    return scores
 
 # Confidence
 def log_odds(prob):
