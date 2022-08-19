@@ -29,7 +29,7 @@ class LIMER(object):
                 return probs.cpu().numpy()
             return probs.detach().numpy()
             
-def evaluate_lime(limer, k, num_samples, texts, labels):
+def evaluate_lime(limer, k, num_samples, texts):
 
     file = open(f'data/{limer.dataset}/lime_k{k}.txt', 'w+')
     
@@ -39,7 +39,6 @@ def evaluate_lime(limer, k, num_samples, texts, labels):
     
     for i in tqdm(range(N)):
         text = texts[i]
-        y = np.argmax(labels[i], -1)
         exp = limer.explainer.explain_instance(text, limer.predict_proba, num_features=k, 
                                                num_samples=num_samples)
         top_tokens = [item[0] for item in exp.as_list()]
@@ -83,4 +82,4 @@ if __name__ == "__main__":
     
     kernel_width = widths[dataset]
     limer = LIMER(dg, cls, kernel_width, dataset, device)
-    evaluate_lime(limer, k, num_samples, dg.test_text, dg.test_label)
+    evaluate_lime(limer, k, num_samples, dg.test_text)
