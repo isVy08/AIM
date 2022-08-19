@@ -5,6 +5,7 @@ import init
 from utils import get_config
 from lime.lime_text import LimeTextExplainer
 from data_generator import DataGenerator
+import numpy as np
 
 
 
@@ -28,19 +29,20 @@ class LIMER(object):
                 return probs.cpu().numpy()
             return probs.detach().numpy()
             
-def evaluate_lime(limer, k, num_samples, texts):
+def evaluate_lime(limer, k, num_samples, texts, labels):
 
     file = open(f'data/{limer.dataset}/lime_k{k}.txt', 'w+')
     
     
     N = len(texts)
     print("Test set size: ", N)
-    labs = tuple(range(limer.dg.C))
-
+    
     for i in tqdm(range(N)):
         text = texts[i]
-        exp = limer.explainer.explain_instance(text, limer.predict_proba, num_features=k, num_samples=num_samples, labels=labs) # explain label 1
-        top_tokens = [item[0] for item in exp.as_list()]
+        y = np.argmax(labels[i], -1)
+        exp = limer.explainer.explain_instance(text, limer.predict_proba, num_features=k, 
+                                               num_samples=num_samples, labels=(y,))
+        top_tokens = [item[0] for item in exp.as_list(label=y)]
         file.write(str(top_tokens) + '\n')
     
     file.close()
@@ -49,7 +51,8 @@ def evaluate_lime(limer, k, num_samples, texts):
 if __name__ == "__main__":
     dataset = sys.argv[1]
     k = int(sys.argv[2])
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    # device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
+    device = 'cpu'
     config_path = f'config/{dataset}.json'
     config = get_config(config_path)
     cls_config = get_config(config.classifier_config)
@@ -80,4 +83,4 @@ if __name__ == "__main__":
     
     kernel_width = widths[dataset]
     limer = LIMER(dg, cls, kernel_width, dataset, device)
-    evaluate_lime(limer, k, num_samples, dg.test_text)
+    evaluate_lime(limer, k, num_samples, dg.test_text[:10], dg.test_label)
