@@ -9,7 +9,6 @@ from torch.utils.data import DataLoader
 from data_generator import Tokenizer, DataGenerator
 
 
-
 def train_epoch(net, optimizer, scheduler, loader, class_criterion, info_criterion, X, Y, device):
     net.train()
     losses = 0
@@ -106,7 +105,7 @@ def train(config):
         optimizer = torch.optim.Adam(net.parameters(), lr=config.lr, betas=(0.5, 0.999))
         net.to(device)
     
-    scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.97)
+    # scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.97)
 
     class_criterion = nn.CrossEntropyLoss(reduction='sum')
     info_criterion = nn.KLDivLoss(reduction='sum')
@@ -130,9 +129,7 @@ def train(config):
 
     
 def validate(config):
-
-
-
+    import numpy as np
     device = torch.device(config.device if torch.cuda.is_available() else 'cpu')
     
     dg = DataGenerator(config)
@@ -168,18 +165,19 @@ def validate(config):
     
 
 if __name__ == "__main__":
+    import sys
     dataset = sys.argv[1]
     K = sys.argv[2]
-    config.K = int(K)
     config_path = f'config/{dataset}.json'
     config = get_config(config_path)
     config.K = int(K)
+    config_path = f'config/{dataset}.json'
+    
+    config.K = int(K)
     config.score_path = config.score_path + f'_k{config.K}.txt' 
     config.model_path = config.model_path + f'_k{config.K}.pt'
-    import sys
-    if sys.argv[3] == 'train':
-        train(config)
-    else:
-        dataset = config.data_path.split('/')[-2]
-        validate(config)
+    
+    
+    train(config)    
+    validate(config)
         

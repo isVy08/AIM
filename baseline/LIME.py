@@ -83,4 +83,4 @@ if __name__ == "__main__":
     
     kernel_width = widths[dataset]
     limer = LIMER(dg, cls, kernel_width, dataset, device)
-    evaluate_lime(limer, k, num_samples, dg.test_text[:10], dg.test_label)
+    evaluate_lime(limer, k, num_samples, dg.test_text, dg.test_label)
