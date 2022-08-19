@@ -41,8 +41,8 @@ def evaluate_lime(limer, k, num_samples, texts, labels):
         text = texts[i]
         y = np.argmax(labels[i], -1)
         exp = limer.explainer.explain_instance(text, limer.predict_proba, num_features=k, 
-                                               num_samples=num_samples, labels=(y,))
-        top_tokens = [item[0] for item in exp.as_list(label=y)]
+                                               num_samples=num_samples)
+        top_tokens = [item[0] for item in exp.as_list()]
         file.write(str(top_tokens) + '\n')
     
     file.close()
