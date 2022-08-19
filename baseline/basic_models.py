@@ -11,8 +11,8 @@ from datasets import load_dataset
 from transformers import (AutoModelForSequenceClassification, PreTrainedModel, PreTrainedTokenizer)
 import os
 import numpy as np
-from baseline.utils_fi import divide_to_batches, get_indices
-from baseline.fi import calculate_covariance, cholesky, flatten
+from utils_fi import divide_to_batches, get_indices
+from fi import calculate_covariance, cholesky, flatten
 
 """
 Image modality (CNN)

@@ -6,8 +6,6 @@ from explainer import Model, Selector, Explainer
 from data_generator import Tokenizer, DataGenerator
 
 
-stopwords = load('./data/stopwords') + list(string.punctuation)   
-wnb = load_pickle('./model/wordnet.db')
 
 def load_base(config):
     """
@@ -81,6 +79,9 @@ def evaluate(X, cls, scores, k, device, L):
     
     N = X.size(0)
     A, S, B, NL, PL = 0, 0, 0, 0, 0
+
+    stopwords = load('./data/stopwords') + list(string.punctuation)   
+    wnb = load_pickle('./model/wordnet.db')
     
 
     for i in tqdm(range(N)):
@@ -140,6 +141,9 @@ def evaluate_lime(texts, cls, dg, tokens, k, device):
     N = len(texts)
     A, S, B, NL, PL = 0, 0, 0, 0, 0
     dg.verbose = False
+
+    stopwords = load('./data/stopwords') + list(string.punctuation)   
+    wnb = load_pickle('./model/wordnet.db')
     
 
     for i in tqdm(range(N)):

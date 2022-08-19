@@ -2,7 +2,7 @@ import numpy as np
 import torch
 from torch.nn import Module
 from torch import Tensor
-from transformers import PreTrainedModel
+# from transformers import PreTrainedModel
 from typing import List, Tuple, Union, Any, Dict
 
 
