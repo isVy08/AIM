@@ -2,7 +2,7 @@ import numpy as np
 import torch
 from torch.nn import Module
 from torch import Tensor
-# from transformers import PreTrainedModel
+from transformers import PreTrainedModel
 from typing import List, Tuple, Union, Any, Dict
 
 
@@ -92,7 +92,7 @@ def perturbate(inputs: Tensor,
                cholesky_decomposed_covariance: Union[np.ndarray, Tensor] = None,
                per_channel: bool = False,
                var_spread: float = 0.15,
-               device: str = None):
+               device: str = 'cpu'):
     inputs_shape = inputs.shape
     if device is None:
         device = inputs.device
@@ -129,8 +129,9 @@ def extract_gradients(model: Module,
                       attention_mask: Tensor = None,
                       label: Union[int, List[int]] = None,
                       outputs_activation_func=None,
+                      device: str = 'cpu',
                       return_outputs: bool = False) -> Union[Tensor, Tuple[Tensor, Tensor]]:
-    device = 'cpu'
+    from transformers import PreTrainedModel
     # add batch dim to inputs
     inputs = inputs.unsqueeze(0).to(device)
     if modality == 'text':
@@ -204,7 +205,7 @@ def perturbatation_gradients(model: Module,
         perturbation = perturbate(inputs, covariance, cholesky_decomposed_covariance,
                                   per_channel, var_spread, pertubation_device)
         grad, output = extract_gradients(model, perturbation, modality, attention_mask,
-                                         label, outputs_activation_func,
+                                         label, outputs_activation_func, pertubation_device,
                                          return_outputs=True)
         grads.append(grad)
         outputs.append(output)

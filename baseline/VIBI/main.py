@@ -156,7 +156,7 @@ def validate(config):
         if y == y_hat:
             acc += 1
         
-        out = (score.tolist(), y_hat)
+        out = (score[0, :].tolist(), y_hat)
         score_file.write(str(out)+'\n')
 
 
