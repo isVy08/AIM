@@ -13,7 +13,7 @@
     "chunk_size": 1,
     "tau": 0.5,
     "data_fraction": 1.0,
-    "beta": 0.5,
+    "beta": 2.0,
     "batch_size": 100,
     "lr": 1e-3,
     "epochs": 10,

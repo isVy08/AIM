@@ -136,11 +136,8 @@ def L2X(train, dg, model_path, batch_size):
     
 
     print('Creating model...')
-    if dataset in ('imdb', 'hatex'):
-        tau = 0.2
-    else:
-        tau = 0.5
-
+    taus = {'imdb': 0.7, 'hatex': 0.1, 'agnews': 0.2}
+    tau = taus[dataset]
     # P(S|X)
     with tf.compat.v1.variable_scope('selection_model'):
         X_ph = Input(shape=(maxlen,), dtype='int32')
