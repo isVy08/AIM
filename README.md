@@ -68,23 +68,25 @@ python main.py config/imdb.json
 ```
 You will find the trained models inside their respective directory `model/`
 
+
+## Inference
+`infer.py` provides instructions on how to perform inference for **AIM** and other baselines. For example on IMDB test set, run
+
+```
+python infer.py imdb
+```
+and feature weights will be written in a text file `data/imdb/aim.txt`. 
+
+
 # Evaluation
 First, we need a list of stopwords and [WordNet](https://wordnet.princeton.edu/) database. The [Google Drive folder](https://drive.google.com/drive/folders/1LfEAcN1DU9PKYRiY0e8dZ8zTcG0k1Mfv?usp=sharing) provides a curated list of stopwords and a shortcut `dict` object to Wordnet database. Download and place them inside `model/`.
 
-## Adaptive Inference
-To perform adaptive infernece on a dataset e.g., IMDB, please run 
-```
-python infer_adaptive.py config/imdb.json
-```
-
-You can specify the value for *K_max* in the script. This script also outputs the weight vectors and qualitative samples written into separate files for your investigation. The saved weight vectors are used for conventional inference. To disable this operation, please set `output_file = None` and `score_file = None`.
-
-## Conventional Inference
-`infer_conventional.py` provides instructions on how to perform conventional inference for **AIM** and other baselines. This evaluation method requires a saved weight vector for the model. To obtain one for **AIM**, please run `infer_adaptive.py` first and specify a path for `score_file`. For example, to evaluate **AIM** on IMDB with path to the weight vector as `data/imdb/score`,
+To evaluate **AIM** on IMDB test set, run 
 
 ```
-python infer_conventional.py config/imdb.json AIM data/imdb/score
-```
+python evaluate.py imdb data/imdb/aim.txt
+``` 
+
 On how to run experiments on the baseline models, please refer to `baseline/`. 
 <br>The codes are gratefully adapted from [L2X repo](https://github.com/Jianbo-Lab/L2X), [LIME repo](https://github.com/marcotcr/lime-experiments) and [VIBI repo](https://github.com/SeojinBang/VIBI).
 

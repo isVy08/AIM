@@ -94,9 +94,8 @@ if __name__ == "__main__":
     dataset = sys.argv[1]
     config_path = f'config/{dataset}.json'
     config = get_config(config_path)
-    no = sys.argv[2]
-    config.model_path = config.model_path + f'_{no}.pt'
-    config.score_path = config.score_path + f'_{no}.txt'
+    config.model_path = config.model_path + f'.pt'
+    config.score_path = config.score_path + f'.txt'
     
     score_file = open(config.score_path, 'w+')    
     infer(config, score_file)
