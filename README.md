@@ -78,7 +78,7 @@ python infer.py imdb
 and feature weights will be written in a text file `data/imdb/aim.txt`. 
 
 
-# Evaluation
+## Evaluation
 First, we need a list of stopwords and [WordNet](https://wordnet.princeton.edu/) database. The [Google Drive folder](https://drive.google.com/drive/folders/1LfEAcN1DU9PKYRiY0e8dZ8zTcG0k1Mfv?usp=sharing) provides a curated list of stopwords and a shortcut `dict` object to Wordnet database. Download and place them inside `model/`.
 
 To evaluate **AIM** on IMDB test set, run 
