@@ -1,6 +1,6 @@
 # AIM
 
-This repo includes codes for reproducing the experiments in the paper Additive Instance-wise Approach to Multi-class Model Interpretation.
+This repo includes codes for reproducing the experiments in the paper [Additive Instance-wise Approach to Multi-class Model Interpretation](https://arxiv.org/abs/2207.03113) accepted at ICLR 2023.
 
 ## Dependencies
 AIM requires Python 3.7+ and the following packages
