@@ -69,8 +69,8 @@ class Sample_Concrete(nn.Module):
         super(Sample_Concrete, self).__init__()
         self.tau = tau
     def forward(self, probs):
-        unif_a = torch.rand_like(probs)
-        unif_b = torch.rand_like(probs)
+        unif_a = torch.rand(probs.shape)
+        unif_b = torch.rand(probs.shape)
 
         gumbel_a = -torch.log(-torch.log(unif_a))
         gumbel_b = -torch.log(-torch.log(unif_b))
