@@ -94,12 +94,10 @@ On how to run experiments on the baseline models, please refer to `baseline/`.
 # Citation
 If you use the codes or datasets in this repository, please cite our paper.
 ```
-@inproceedings{
-    vo2023an,
-    title={An Additive Instance-Wise Approach to Multi-class Model Interpretation},
-    author={Vy Vo and Van Nguyen and Trung Le and Quan Hung Tran and Reza Haf and Seyit Camtepe and Dinh Phung},
-    booktitle={The Eleventh International Conference on Learning Representations },
-    year={2023},
-    url={https://openreview.net/forum?id=5OygDd-4Eeh}
+@inproceedings{vo2022additive,
+  title={An Additive Instance-Wise Approach to Multi-class Model Interpretation},
+  author={Vo, Vy and Nguyen, Van and Le, Trung and Tran, Quan Hung and Haf, Reza and Camtepe, Seyit and Phung, Dinh},
+  booktitle={The Eleventh International Conference on Learning Representations},
+  year={2022}
 }
 ```
